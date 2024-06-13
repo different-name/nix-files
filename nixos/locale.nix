@@ -1,8 +1,8 @@
 {inputs, ...}: {
-    time.timeZone = "Japan/Tokyo";
+  time.timeZone = "Japan/Tokyo";
 
-    i18n.defaultLocale = "en_AU.UTF-8";
+  i18n.defaultLocale = "en_AU.UTF-8";
 
-    console.useXkbConfig = true;
-    services.xserver.xkb.layout = "us";
+  console.useXkbConfig = true;
+  services.xserver.xkb.layout = "us";
 }
