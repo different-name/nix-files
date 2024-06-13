@@ -11,5 +11,6 @@
     networkmanagerapplet
     imagemagick
     kdePackages.dolphin
+    ani-cli
   ];
 }
