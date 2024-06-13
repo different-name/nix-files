@@ -1,9 +1,8 @@
 let
-  different = "";
-  users = [ different ];
+    different = "";
+    users = [different];
 
-  lithium = "";
-  systems = [ lithium ];
+    lithium = "";
+    systems = [lithium];
 in {
-  
 }

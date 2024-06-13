@@ -28,36 +28,37 @@ in {
                 mvactive = binding "SUPER ALT" "moveactive";
                 mvtows = binding "SUPER SHIFT" "movetoworkspace";
                 arr = [1 2 3 4 5 6 7];
-            in [
-                "SUPER, Return, exec, kitty"
-                "SUPER, W, exec, librewolf"
-                #"SUPER, E, exec
-                "CTRL ALT, Delete, exit"
-                "ALT, Q, killactive"
-                "SUPER, F, togglefloating"
-                "SUPER, G, fullscreen"
-                "SUPER, O, fakefullscreen"
-                "SUPER, P, togglesplit"
+            in
+                [
+                    "SUPER, Return, exec, kitty"
+                    "SUPER, W, exec, librewolf"
+                    #"SUPER, E, exec
+                    "CTRL ALT, Delete, exit"
+                    "ALT, Q, killactive"
+                    "SUPER, F, togglefloating"
+                    "SUPER, G, fullscreen"
+                    "SUPER, O, fakefullscreen"
+                    "SUPER, P, togglesplit"
 
-                (mvfocus "k" "u")
-                (mvfocus "j" "d")
-                (mvfocus "l" "r")
-                (mvfocus "h" "l")
-                (ws "left" "e-1")
-                (ws "right" "e+1")
-                (mvtows "left" "e-1")
-                (mvtows "right" "e+1")
-                (resizeactive "k" "0 -20")
-                (resizeactive "j" "0 20")
-                (resizeactive "l" "20 0")
-                (resizeactive "h" "-20 0")
-                (mvactive "k" "0 -20")
-                (mvactive "j" "0 20")
-                (mvactive "l" "20 0")
-                (mvactive "h" "-20 0")
-            ]
-            ++ (map (i: ws (toString i) (toString i)) arr)
-            ++ (map (i: mvtows (toString i) (toString i)) arr);
+                    (mvfocus "k" "u")
+                    (mvfocus "j" "d")
+                    (mvfocus "l" "r")
+                    (mvfocus "h" "l")
+                    (ws "left" "e-1")
+                    (ws "right" "e+1")
+                    (mvtows "left" "e-1")
+                    (mvtows "right" "e+1")
+                    (resizeactive "k" "0 -20")
+                    (resizeactive "j" "0 20")
+                    (resizeactive "l" "20 0")
+                    (resizeactive "h" "-20 0")
+                    (mvactive "k" "0 -20")
+                    (mvactive "j" "0 20")
+                    (mvactive "l" "20 0")
+                    (mvactive "h" "-20 0")
+                ]
+                ++ (map (i: ws (toString i) (toString i)) arr)
+                ++ (map (i: mvtows (toString i) (toString i)) arr);
 
             bindm = [
                 "SUPER, mouse:273, resizewindow"

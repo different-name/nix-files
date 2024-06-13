@@ -24,6 +24,7 @@
         ./networking.nix
         ./bootloader.nix
         ./zfs.nix
+        ./nix-helper.nix
 
         # Import your generated (nixos-generate-config) hardware configuration
         ./hardware-configuration.nix
@@ -34,7 +35,7 @@
             # Add overlays your own flake exports (from overlays and pkgs dir):
             outputs.overlays.additions
             outputs.overlays.modifications
-        #      outputs.overlays.unstable-packages
+            #      outputs.overlays.unstable-packages
 
             # You can also add overlays exported from other flakes:
             # neovim-nightly-overlay.overlays.default
@@ -92,7 +93,7 @@
     ];
 
     security.sudo.extraConfig = ''
-        Defaults timestamp_timeout=120 # only ask for password every 2h
+      Defaults timestamp_timeout=120 # only ask for password every 2h
     '';
 
     users.users = {

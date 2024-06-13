@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{inputs, ...}: {
     networking = {
         hostName = "lithium";
         hostId = "3d0eee50";

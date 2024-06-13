@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{inputs, ...}: {
     # Enable the X11 windowing system.
     services.xserver.enable = true;
 
@@ -9,6 +9,6 @@
     # Configure keymap in X11
     services.xserver.xkb.layout = "us";
 
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services.xserver.videoDrivers = ["amdgpu"];
     # services.xerver.videoDrivers = [ "nvidia" ];
 }
