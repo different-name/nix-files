@@ -8,25 +8,29 @@
     hardware.url = "github:nixos/nixos-hardware";
 
     # Disko - Declarative partitioning and formatting
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     # Impermanence - Handles persistent state
     impermanence.url = "github:nix-community/impermanence";
 
     # Home Manager - Manages user environment
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Agenix - Age encrypted secrets
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.darwin.follows = "";
+
+    # Hyprland - Wayland Compositor
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
-    home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -62,6 +66,7 @@
           ./nixos/configuration.nix
           inputs.disko.nixosModules.default (import ./nixos/disk-configuration.nix)
           inputs.impermanence.nixosModules.impermanence
+          inputs.agenix.nixosModules.default
         ];
       };
     };
