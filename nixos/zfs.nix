@@ -2,7 +2,7 @@
     boot = {
         zfs = {
             package = pkgs.zfs_unstable;
-            devNodes = "/dev";
+            devNodes = "/dev/";
             forceImportAll = true;
         };
         kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;

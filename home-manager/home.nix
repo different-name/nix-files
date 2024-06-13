@@ -1,12 +1,10 @@
-# This is your home-manager configuration file
-# Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
-  inputs,
-  outputs,
-  lib,
-  config,
-  pkgs,
-  ...
+    inputs,
+    outputs,
+    lib,
+    config,
+    pkgs,
+    ...
 }: {
     imports = [
         inputs.impermanence.nixosModules.home-manager.impermanence
@@ -46,6 +44,7 @@
         homeDirectory = "/home/different";
     };
 
+    # Enable Home Manager
     programs.home-manager.enable = true;
 
     # Nicely reload system units when changing configs
