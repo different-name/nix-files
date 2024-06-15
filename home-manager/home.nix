@@ -8,6 +8,7 @@
 }: {
   imports = [
     inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.catppuccin.homeManagerModules.catppuccin
 
     ./packages.nix
     ./persistence.nix
@@ -15,6 +16,7 @@
     ./git.nix
     ./librewolf.nix
     ./codium.nix
+    ./catppuccin.nix
   ];
 
   nixpkgs = {

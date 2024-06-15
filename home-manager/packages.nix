@@ -10,7 +10,7 @@
     rofi-wayland
     networkmanagerapplet
     imagemagick
-    kdePackages.dolphin
     ani-cli
+    fd
   ];
 }

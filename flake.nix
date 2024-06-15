@@ -27,8 +27,8 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Stylix - Colour scheme
-    stylix.url = "github:danth/stylix";
+    # Catppucinn - Color Theme
+    catppuccin.url = "github:/catppuccin/nix";
 
     # Alejandra - Nix code formatter
     alejandra.url = "github:kamadorueda/alejandra";
@@ -70,7 +70,7 @@
           (import ./nixos/disk-configuration.nix)
           inputs.impermanence.nixosModules.impermanence
           inputs.agenix.nixosModules.default
-          inputs.stylix.nixosModules.stylix
+          inputs.catppuccin.nixosModules.catppuccin
         ];
       };
     };

@@ -25,8 +25,9 @@
     ./bootloader.nix
     ./zfs.nix
     ./nix-helper.nix
-    ./stylix.nix
+    ./catppuccin.nix
     ./polkit.nix
+    ./file-manager.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -64,12 +65,15 @@
       flake-registry = "";
       # Workaround for https://github.com/NixOS/nix/issues/9574
       nix-path = config.nix.nixPath;
+
+      # See https://jackson.dev/post/nix-reasonable-defaults/
       connect-timeout = 5;
       log-lines = 25;
       min-free = 128000000;
       max-free = 1000000000;
       fallback = true;
       auto-optimise-store = true;
+      warn-dirty = false;
     };
 
     # Opinionated: disable channels

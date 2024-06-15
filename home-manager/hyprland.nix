@@ -20,6 +20,11 @@ in {
         "dunst"
       ];
 
+      monitor = [
+        "desc:Valve Corporation ANX7530 U 0x00000001, preferred, 0x0, 1, transform, 3"
+        ",preferred,auto,1"
+      ];
+
       general = {
         resize_on_border = true;
       };
