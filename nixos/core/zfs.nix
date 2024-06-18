@@ -7,14 +7,16 @@
   boot = {
     zfs = {
       package = pkgs.zfs_unstable;
-      devNodes = "/dev/";
-      forceImportAll = true;
+      devNodes = "/dev/"; # Compatability for disks with no serial numbers
+      forceImportAll = true; # Force import zpools at boot
     };
+
+    # Newest kernels might not be supported by ZFS
+    # Use the latest compatible kernel:
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     initrd = {
-      availableKernelModules = ["hid_generic"];
-      systemd.enable = true;
+      # Roll back the root and home datasets to empty! impermanence :o
       systemd.services.rollback = {
         serviceConfig = {
           Type = "oneshot";
@@ -22,8 +24,8 @@
         };
         unitConfig.DefaultDependencies = "no";
         wantedBy = ["initrd.target"];
-        after = ["zfs-import.target"];
-        before = ["sysroot.mount"];
+        after = ["zfs-import.target"]; # Run after zfs import complete
+        before = ["sysroot.mount"]; # Run before the datasets are mounted
         path = [config.boot.zfs.package];
         script = ''
           zfs rollback -r rpool/root@empty

@@ -95,4 +95,5 @@
     };
   };
   fileSystems."/home".neededForBoot = true; # Workaround for zfs mounting after /home folders are created
+  fileSystems."/persist".neededForBoot = true; # Required for impermanence to work
 }

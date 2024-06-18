@@ -7,30 +7,13 @@
   ...
 }: {
   imports = [
-    # If you want to use modules your own flake exports (from modules/nixos):
-    # outputs.nixosModules.example
+    ./hardware-configuration.nix
 
-    # Or modules from other flakes (such as nixos-hardware):
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-gpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
 
-    # You can also split up your configuration and import pieces of it here:
-    ./home-manager.nix
-    ./hyprland.nix
-    ./audio.nix
-    ./persistence.nix
-    ./locale.nix
-    ./networking.nix
-    ./bootloader.nix
-    ./zfs.nix
-    ./nix-helper.nix
-    ./catppuccin.nix
-    ./polkit.nix
-    ./file-manager.nix
-
-    # Import your generated (nixos-generate-config) hardware configuration
-    ./hardware-configuration.nix
+    ../../core
   ];
 
   nixpkgs = {
@@ -84,12 +67,19 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
+  services.getty.autologinUser = "different";
+
   hardware = {
     opengl = {
       enable = true;
       driSupport = true;
     };
     enableRedistributableFirmware = true;
+  };
+
+  networking = {
+    hostName = "lithium";
+    hostId = "3d0eee50";
   };
 
   services.printing.enable = true;
@@ -109,8 +99,15 @@
     git
   ];
 
+  environment.loginShellInit = ''
+    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
+      exec hyprland
+    fi
+  '';
+
   security.sudo.extraConfig = ''
     Defaults timestamp_timeout=120 # only ask for password every 2h
+    Defaults lecture=never
   '';
 
   users.users = {
@@ -134,6 +131,12 @@
       PermitRootLogin = "no";
       PasswordAuthentication = false;
     };
+  };
+
+  xdg.portal = {
+    enable = true;
+    # extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    config.common.default = "*";
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

@@ -26,8 +26,10 @@
     # Hyprland - Wayland Compositor
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    hyprcursor.url = "github:hyprwm/hyprcursor";
+    hyprcursor.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Catppucinn - Color Theme
+    # Catppuccin - Color Theme
     catppuccin.url = "github:/catppuccin/nix";
 
     # Alejandra - Nix code formatter
@@ -65,9 +67,9 @@
       "lithium" = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-          ./nixos/configuration.nix
+          ./nixos/hosts/lithium
           inputs.disko.nixosModules.default
-          (import ./nixos/disk-configuration.nix)
+          (import ./nixos/hosts/lithium/disk-configuration.nix)
           inputs.impermanence.nixosModules.impermanence
           inputs.agenix.nixosModules.default
           inputs.catppuccin.nixosModules.catppuccin

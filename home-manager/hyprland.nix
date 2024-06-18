@@ -29,6 +29,10 @@ in {
         resize_on_border = true;
       };
 
+      dwindle = {
+        preserve_split = true;
+      };
+
       input = {
         kb_layout = "us";
       };
@@ -43,10 +47,10 @@ in {
         arr = [1 2 3 4 5 6 7];
       in
         [
-          "SUPER, Space, exec, rofi -show drun -show-icons"
+          "SUPER, S, exec, rofi -show drun -show-icons"
           "SUPER, Return, exec, kitty"
           "SUPER, W, exec, librewolf"
-          #"SUPER, E, exec
+          "SUPER, E, exec, thunar"
           "CTRL ALT, Delete, exit"
           "ALT, Q, killactive"
           "SUPER, F, togglefloating"

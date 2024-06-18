@@ -1,7 +1,7 @@
 {input, ...}: {
-  fileSystems."/persist".neededForBoot = true;
   environment.persistence."/persist/system" = {
     hideMounts = true;
+
     directories = [
       "/var/log"
       "/var/lib/bluetooth"
@@ -10,6 +10,7 @@
       "/etc/NetworkManager/system-connections"
       # { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
     ];
+
     files = [
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"

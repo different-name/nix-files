@@ -10,11 +10,18 @@
       ".ssh"
       ".local/share/keyrings"
       ".local/share/direnv"
-      ".local/share/Steam"
-      ".config/vesktop"
+      #".local/share/Steam"
       ".cache"
-      ".steam"
+      #".steam"
       ".librewolf/xg1lny11.default/storage"
+      ".config/WebCord"
+      ".config/VSCodium/CachedDate"
+      ".config/VSCodium/Cache"
+      ".config/VSCodium/Backups"
+      ".config/VSCodium/Code Cache"
+      ".config/VSCodium/DawnCache"
+      ".config/VSCodium/GPUCache"
+      ".config/VSCodium/User/History"
       # {
       #   directory = ".local/share/Steam";
       #   method = "symlink";
