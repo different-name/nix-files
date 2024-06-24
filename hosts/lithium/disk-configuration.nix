@@ -6,7 +6,7 @@
       content = {
         type = "gpt";
         partitions = {
-          "ESP" = {
+          ESP = {
             size = "500M";
             type = "EF00";
             content = {
@@ -15,14 +15,14 @@
               mountpoint = "/boot";
             };
           };
-          "swap" = {
+          swap = {
             size = "4G";
             content = {
               type = "swap";
               randomEncryption = true; # https://wiki.nixos.org/wiki/Swap
             };
           };
-          "zfs" = {
+          zfs = {
             size = "100%";
             content = {
               type = "zfs";
@@ -55,7 +55,7 @@
       };
 
       datasets = {
-        "root" = {
+        root = {
           type = "zfs_fs";
           mountpoint = "/";
           options = {
@@ -64,7 +64,7 @@
           };
           postCreateHook = "zfs snapshot rpool/root@empty";
         };
-        "nix" = {
+        nix = {
           type = "zfs_fs";
           mountpoint = "/nix";
           options = {
@@ -73,7 +73,7 @@
           };
           postCreateHook = "zfs snapshot rpool/nix@empty";
         };
-        "persist" = {
+        persist = {
           type = "zfs_fs";
           mountpoint = "/persist";
           options = {
@@ -82,7 +82,7 @@
           };
           postCreateHook = "zfs snapshot rpool/persist@empty";
         };
-        "home" = {
+        home = {
           type = "zfs_fs";
           mountpoint = "/home";
           options = {
@@ -91,6 +91,30 @@
           };
           postCreateHook = "zfs snapshot rpool/home@empty";
         };
+        # steam needs ~/.steam to be a regular folder or mount
+        # this folder cannot be a symlink or bind mount, else
+        # steam will crashcomplaining about steamwebhelper
+#        steam = {
+#          type = "zfs_fs";
+#          mountpoint = "/home/different/.steam";
+#          options = {
+#            canmount = "noauto"; # Only allow explicit mounting
+#            mountpoint = "legacy"; # Do not mount under the pool (/zpool/...)
+#          };
+#          postCreateHook = "zfs snapshot rpool/steam@empty";
+#        };
+        # steam needs ~/.local/share/Steam to be a regular folder or mount
+        # this folder cannot be a symlink or bind mount, else
+        #steam will crashcomplaining about steamwebhelper
+#        lssteam = {
+#          type = "zfs_fs";
+#          mountpoint = "/home/different/.local/share/Steam";
+#          options = {
+#            canmount = "noauto"; # Only allow explicit mounting
+#            mountpoint = "legacy"; # Do not mount under the pool (/zpool/...)
+#          };
+#          postCreateHook = "zfs snapshot rpool/lssteam@empty";
+#        };
       };
     };
   };

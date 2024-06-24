@@ -3,22 +3,24 @@
     inputs.catppuccin.homeManagerModules.catppuccin
 
     ../. # home
-
     ./persistence.nix
-    ./terminal/git.nix
+
     ./programs/hyprland.nix
     ./programs/librewolf.nix
     ./programs/codium.nix
     ./programs/catppuccin.nix
-    ./terminal/kitty.nix
     ./programs/waybar.nix
-    ./services/mako.nix
-    ./terminal/fd.nix
     ./programs/rofi.nix
+
+    ./terminal/kitty.nix
+    ./terminal/fd.nix
+    ./terminal/git.nix
+
+    ./services/network-manager-applet.nix
+    ./services/mako.nix
   ];
 
   home.packages = with pkgs; [
-    steam
     libnotify
     swww
     networkmanagerapplet

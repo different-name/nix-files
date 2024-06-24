@@ -13,12 +13,15 @@
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     # https://wiki.archlinux.org/title/Silent_boot
-    consoleLogLevel = 3;
-    kernelParams = [
-      "quiet" # disable most log messages
-      "systemd.show_status=false" # disable systemd messages during initrd init
-      "rd.udev.log_level=3" # log level to 3 + disable systemd printing version num
-    ];
+    # consoleLogLevel = 3;
+    # kernelParams = [
+    #   "quiet" # disable most log messages
+    #   "systemd.show_status=false" # disable systemd messages during initrd init
+    #   "rd.udev.log_level=3" # log level to 3 + disable systemd printing version num
+    # ];
+
+    # graphical boot splash
+    # plymouth.enable = true;
 
     loader = {
       # systemd-boot on UEFI
@@ -27,8 +30,5 @@
       # Skip boot options after 3 seconds
       timeout = 3;
     };
-
-    # graphical boot splash
-    plymouth.enable = true;
   };
 }

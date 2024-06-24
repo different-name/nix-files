@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+  # steam will fail on first install, with the error message
+  # "Fatal Error: Failed to load steamui.so" relaunching appears
+  # to fix the issue and steam will continue where it left off
   programs.steam = {
     enable = true;
 
