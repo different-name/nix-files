@@ -6,7 +6,7 @@
       # global
       "suppressevent maximize, class:.*"
 
-      # galculate
+      # qalculate
       "float, class:^(qalculate-gtk)$"
       "size 850 575, class:^(qalculate-gtk)$"
 
@@ -20,8 +20,8 @@
       "float, class:^(xdg-desktop-portal-gtk)$"
 
       # pavucontrol
-      "float, class:^(pavucontrol)$"
-      "size 1000 750, class:^(pavucontrol)$"
+      "float, class:^(org.pulseaudio.pavucontrol)$"
+      "size 1000 750, class:^(org.pulseaudio.pavucontrol)$"
 
       # thunar file operations
       "float, title:^(File Operation Progress)$"
