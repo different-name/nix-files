@@ -6,6 +6,7 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmh/7dgdq32eSKcp6kwN28UF+PuyKJmvFRZKKUnyvf0 different@potassium"
     # iodine
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDFgR+CwgIILS4vhO1VFCZwpek+MKMlA/rWZbWpPnPwz iodine@iodine"
+    # insert new user keys here
   ];
 
   rootKeys = [
@@ -15,11 +16,11 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYQZq3ACrl2fg5pMh8YvErhigZgzOTrC/XiCk7li1tP root@potassium"
     # iodine
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPkkCK33jVJn/dSsrhc3zZIyzGZ6uaKwjIKCKyu0YVpm root@iodine"
+    # insert new root keys here
   ];
 
   keys = userKeys ++ rootKeys;
 in {
-  # create/edit: nix run github:ryantm/agenix -- -e xxx/xxx.age
-  # rekey:       nix run github:ryantm/agenix -- -r
   "password.age".publicKeys = keys;
+  # insert new passwords here
 }

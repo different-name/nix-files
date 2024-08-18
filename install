@@ -1,0 +1,42 @@
+#! /usr/bin/env nix-shell
+#! nix-shell -i bash -p bash git jq disko nix-output-monitor expect
+
+REPO_URL="https://github.com/Different-Name/nix-files"
+TIMESTAMP=$(date +%s%3N)
+# CLONE_DIR="/tmp/nix-files_$TIMESTAMP"
+
+# git clone "$REPO_URL" "$CLONE_DIR"
+# echo
+
+CLONE_DIR="/home/different/nix-files"
+
+
+if [ $? -ne 0 ]; then
+  echo "Error cloning repository"
+  exit 1
+fi
+
+echo -n "Enter the system's hostname: "
+read HOSTNAME
+
+NORMAL_USERS_JSON=$(nix eval --json $CLONE_DIR#nixosConfigurations.$HOSTNAME.config.users.users \
+  --apply "users: (builtins.filter (user: users.\${user}.isNormalUser) (builtins.attrNames users))")
+
+disko -f $CLONE_DIR#$HOSTNAME --root-mountpoint /mnt --dry-run
+
+# unbuffer nixos-install |& nom
+
+readarray -t NORMAL_USERS < <(echo "$NORMAL_USERS_JSON" | jq -cr '.[]')
+
+for USER in "${NORMAL_USERS[@]}"; do
+  echo -n "Enter the desired password for $USER: "
+  read -s PASSWORD
+  echo
+
+  PASSWORD_AGE=$USER@$HOSTNAME/password.age
+
+  sed -i "/^  # insert new passwords here$/i \ \ \"$PASSWORD_AGE\".publicKeys = keys;" $CLONE_DIR/secrets/secrets.nix
+
+  cd "$CLONE_DIR/secrets"
+  echo $PASSWORD | EDITOR="cp /dev/stdin" nix run github:ryantm/agenix -- -e $PASSWORD_AGE
+done

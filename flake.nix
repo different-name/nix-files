@@ -103,6 +103,9 @@
 
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
+        packages = {
+          install = pkgs.callPackage ./install.nix {};
+        };
       };
     };
 }

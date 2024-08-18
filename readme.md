@@ -15,7 +15,29 @@ My NixOS configuration files
 
 ## Usage
 
-Coming soon - see https://github.com/Different-Name/nix-files/issues/45
+Run the following command to run the full installation script
+
+> [!CAUTION]
+> This script performs automatic disk formatting using disko-install in format mode. This **will cause data loss on the target drive**
+>
+> This script is only intended for my personal use, and **has not been thoroughly tested**, I am not responsible for any problems that occur from running this script
+>
+> You should not run this command unless you know exactly what you are doing, and have already created a valid `disk-configuration.nix` file for your system
+>
+> You can review the contents of the script [here](install) 
+
+```console
+sudo nix --experimental-features "nix-command flakes" run github:different-name/nix-files#install
+```
+
+This will:
+
+1. Clone this repo
+2. Prompt for the hostname, this must be a valid host in the config
+3. Generate SSH keypairs for the host and each normal user
+4. Prompt for a password to create for each normal user, creating a password.age file keyed using the generated keypairs
+5. Perform formatting, mounting & installation through disko-install
+6. Copy SSH keys to `/persist/etc/ssh` and `/persist/home/<user>/.ssh`
 
 ## Structure
 
