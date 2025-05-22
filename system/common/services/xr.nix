@@ -114,6 +114,14 @@
       };
     };
 
+    services.pipewire.wireplumber.macros.defaultVolume = [
+      {
+        subject = "node.name";
+        object = "wivrn.source";
+        volume = 0.25;
+      }
+    ];
+
     environment.persistence."/persist/system" = lib.mkIf config.nix-files.core.persistence.enable {
       directories = [
         "/root/.config/dev.slimevr.SlimeVR"

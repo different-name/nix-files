@@ -54,6 +54,33 @@ in {
         };
       });
     };
+
+    defaultVolume = lib.mkOption {
+      default = [];
+      description = "list of node volume rules";
+
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          subject = lib.mkOption {
+            type = lib.types.str;
+            description = "A string that specifies the name of a property to match";
+            example = "node.name";
+          };
+
+          object = lib.mkOption {
+            type = lib.types.str;
+            description = "Object to match";
+            example = "wivrn.source";
+          };
+
+          volume = lib.mkOption {
+            type = lib.types.float;
+            description = "Default volume";
+            example = "0.5";
+          };
+        };
+      });
+    };
   };
 
   config.services.pipewire.wireplumber = lib.mkMerge [
@@ -96,6 +123,47 @@ in {
         autoConnectFunctions =
           cfg.connectPorts
           |> map genAutoConnectFunction
+          |> lib.concatStrings;
+      in
+        autoConnectScript + autoConnectFunctions;
+    })
+
+    (lib.mkIf (cfg.defaultVolume != []) {
+      extraConfig."99-set-node-volume" = {
+        "wireplumber.components" = [
+          {
+            name = "test/set-node-volume.lua";
+            type = "script/lua";
+            provides = "custom.set-node-volume";
+          }
+        ];
+
+        "wireplumber.profiles" = {
+          main = {
+            "custom.set-node-volume" = "required";
+          };
+        };
+      };
+
+      # extraScripts."test/set-node-volume.lua" = ''
+      #   print("Hello, world!")
+      # '';
+
+      extraScripts."test/set-node-volume.lua" = let
+        autoConnectScript = builtins.readFile ./set-node-volume.lua;
+
+        genDefaultVolumeFunction = volumeCfg: let
+          inherit (volumeCfg) subject object volume;
+        in ''
+          set_default_volume {
+            node = Constraint { "${subject}", "matches", "${object}" },
+            volume = ${lib.strings.floatToString volume}
+          }
+        '';
+
+        autoConnectFunctions =
+          cfg.defaultVolume
+          |> map genDefaultVolumeFunction
           |> lib.concatStrings;
       in
         autoConnectScript + autoConnectFunctions;
