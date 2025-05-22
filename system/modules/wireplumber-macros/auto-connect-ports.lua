@@ -10,8 +10,11 @@
 -- Link two ports together
 function link_port(output_port, input_port)
   if not input_port or not output_port then
+    print("link_port: one of the ports is nil")
     return nil
   end
+
+  print("link_port: linking", output_port.properties["port.alias"], "->", input_port.properties["port.alias"])
 
   local link_args = {
     ["link.input.node"] = input_port.properties["node.id"],
@@ -104,9 +107,12 @@ function auto_connect_ports(args)
   end
 
   function _connect()
+    print("Running _connect")
+
     local delete_links = unless and unless:get_n_objects() > 0
 
     if delete_links then
+      print("Deleting existing links due to 'unless' constraint")
       for _i, link in pairs(links) do
         link:request_destroy()
       end
@@ -119,12 +125,17 @@ function auto_connect_ports(args)
     for output_name, input_names in pairs(args.connect) do
       local input_names = input_names[1] == nil and { input_names } or input_names
 
+      print("Connecting output", output_name, "to", table.concat(input_names, ", "))
+
       -- Iterate through all the output ports with the correct alias
       for output in output_om:iterate { Constraint { args.output_match, "equals", output_name } } do
+        print("Found matching output port:", output.properties["port.alias"])
 
         for _i, input_name in pairs(input_names) do
           -- Iterate through all the input ports with the correct alias
           for input in input_om:iterate { Constraint { args.input_match, "equals", input_name } } do
+            print("Found matching input port:", input.properties["port.alias"])
+           
             -- Link all the nodes
             local link = link_port(output, input)
 
