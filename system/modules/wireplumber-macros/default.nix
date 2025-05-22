@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.services.pipewire.wireplumber.connectPorts;
+  cfg = config.services.pipewire.wireplumber.macros;
 in {
-  options.services.pipewire.wireplumber = {
+  options.services.pipewire.wireplumber.macros = {
     connectPorts = lib.mkOption {
       default = [];
       description = "list of port auto-connection rules";
@@ -56,47 +56,49 @@ in {
     };
   };
 
-  config.services.pipewire.wireplumber = lib.mkIf (cfg != []) {
-    extraConfig."99-auto-connect-ports" = {
-      "wireplumber.components" = [
-        {
-          name = "test/auto-connect-ports.lua";
-          type = "script/lua";
-          provides = "custom.auto-connect-ports";
-        }
-      ];
+  config.services.pipewire.wireplumber = lib.mkMerge [
+    (lib.mkIf (cfg.connectPorts != []) {
+      extraConfig."99-auto-connect-ports" = {
+        "wireplumber.components" = [
+          {
+            name = "test/auto-connect-ports.lua";
+            type = "script/lua";
+            provides = "custom.auto-connect-ports";
+          }
+        ];
 
-      "wireplumber.profiles" = {
-        main = {
-          "custom.auto-connect-ports" = "required";
+        "wireplumber.profiles" = {
+          main = {
+            "custom.auto-connect-ports" = "required";
+          };
         };
       };
-    };
 
-    extraScripts."test/auto-connect-ports.lua" = let
-      autoConnectScript = builtins.readFile ./auto-connect-ports.lua;
+      extraScripts."test/auto-connect-ports.lua" = let
+        autoConnectScript = builtins.readFile ./auto-connect-ports.lua;
 
-      genAutoConnectFunction = ports: let
-        generateConstraint = portCfg: ''Constraint { "${portCfg.subject}", "matches", "${portCfg.leftPort}|${portCfg.rightPort}" }'';
-      in ''
-        auto_connect_ports {
-          output = ${generateConstraint ports.output},
-          input = ${generateConstraint ports.input},
+        genAutoConnectFunction = ports: let
+          generateConstraint = portCfg: ''Constraint { "${portCfg.subject}", "matches", "${portCfg.leftPort}|${portCfg.rightPort}" }'';
+        in ''
+          auto_connect_ports {
+            output = ${generateConstraint ports.output},
+            input = ${generateConstraint ports.input},
 
-          output_match = "${ports.output.subject}",
-          input_match = "${ports.input.subject}",
-          connect = {
-            ["${ports.output.leftPort}"] = "${ports.input.leftPort}",
-            ["${ports.output.rightPort}"] = "${ports.input.rightPort}"
+            output_match = "${ports.output.subject}",
+            input_match = "${ports.input.subject}",
+            connect = {
+              ["${ports.output.leftPort}"] = "${ports.input.leftPort}",
+              ["${ports.output.rightPort}"] = "${ports.input.rightPort}"
+            }
           }
-        }
-      '';
+        '';
 
-      autoConnectFunctions =
-        cfg
-        |> map genAutoConnectFunction
-        |> lib.concatStrings;
-    in
-      autoConnectScript + autoConnectFunctions;
-  };
+        autoConnectFunctions =
+          cfg.connectPorts
+          |> map genAutoConnectFunction
+          |> lib.concatStrings;
+      in
+        autoConnectScript + autoConnectFunctions;
+    })
+  ];
 }

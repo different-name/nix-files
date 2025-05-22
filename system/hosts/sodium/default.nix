@@ -70,7 +70,7 @@ in {
     ];
   };
 
-  services.pipewire.wireplumber.connectPorts = [
+  services.pipewire.wireplumber.macros.connectPorts = [
     # mirror audio from goxlr outputs to wivrn output
     {
       output = {
