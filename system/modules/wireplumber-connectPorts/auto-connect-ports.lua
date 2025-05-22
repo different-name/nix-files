@@ -119,23 +119,20 @@ function auto_connect_ports(args)
     for output_name, input_names in pairs(args.connect) do
       local input_names = input_names[1] == nil and { input_names } or input_names
 
-      if delete_links then
-      else
-				-- Iterate through all the output ports with the correct alias
-        for output in output_om:iterate { Constraint { "port.alias", "equals", output_name } } do
+      -- Iterate through all the output ports with the correct alias
+      for output in output_om:iterate { Constraint { args.output_match, "equals", output_name } } do
 
-        	for _i, input_name in pairs(input_names) do
-						-- Iterate through all the input ports with the correct alias
-        	  for input in input_om:iterate { Constraint { "port.alias", "equals", input_name } } do
-							-- Link all the nodes
-        	  	local link = link_port(output, input)
+        for _i, input_name in pairs(input_names) do
+          -- Iterate through all the input ports with the correct alias
+          for input in input_om:iterate { Constraint { args.input_match, "equals", input_name } } do
+            -- Link all the nodes
+            local link = link_port(output, input)
 
-        	  	if link then
-        	  	  table.insert(links, link)
-        	  	end
-						end
-        	end
-				end
+            if link then
+              table.insert(links, link)
+            end
+          end
+        end
       end
     end
   end

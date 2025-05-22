@@ -8,46 +8,46 @@ in {
   options.services.pipewire.wireplumber = {
     connectPorts = lib.mkOption {
       default = [];
-      description = "list of port auto-connection rules based on port aliases";
+      description = "list of port auto-connection rules";
 
       type = lib.types.listOf (lib.types.submodule {
         options = {
           output = {
-            constraint = lib.mkOption {
+            subject = lib.mkOption {
               type = lib.types.str;
-              description = "Constraint to apply when matching port aliases";
-              example = "GoXLR:monitor_*";
+              description = "A string that specifies the name of a property to match";
+              example = "port.alias";
             };
 
-            leftAlias = lib.mkOption {
+            leftPort = lib.mkOption {
               type = lib.types.str;
-              description = "Alias of the left port";
+              description = "Left port object to match";
               example = "GoXLR:monitor_FL";
             };
 
-            rightAlias = lib.mkOption {
+            rightPort = lib.mkOption {
               type = lib.types.str;
-              description = "Alias of the right port";
+              description = "Right port object to match";
               example = "GoXLR:monitor_FR";
             };
           };
 
           input = {
-            constraint = lib.mkOption {
+            subject = lib.mkOption {
               type = lib.types.str;
-              description = "Constraint to apply when matching port aliases";
-              example = "WiVRn:playback_*";
+              description = "A string that specifies the name of a property to match";
+              example = "port.alias";
             };
 
-            leftAlias = lib.mkOption {
+            leftPort = lib.mkOption {
               type = lib.types.str;
-              description = "Alias of the left port";
+              description = "Left port object to match";
               example = "WiVRn:playback_1";
             };
 
-            rightAlias = lib.mkOption {
+            rightPort = lib.mkOption {
               type = lib.types.str;
-              description = "Alias of the right port";
+              description = "Right port object to match";
               example = "WiVRn:playback_2";
             };
           };
@@ -76,13 +76,18 @@ in {
     extraScripts."test/auto-connect-ports.lua" = let
       autoConnectScript = builtins.readFile ./auto-connect-ports.lua;
 
-      genAutoConnectFunction = ports: ''
+      genAutoConnectFunction = ports: let
+        generateConstraint = portCfg: ''Constraint { "${portCfg.subject}", "matches", "${portCfg.leftPort}|${portCfg.rightPort}" }'';
+      in ''
         auto_connect_ports {
-          output = Constraint { "port.alias", "matches", "${ports.output.constraint}" },
-          input = Constraint { "port.alias", "matches", "${ports.input.constraint}" },
+          output = ${generateConstraint ports.output},
+          input = ${generateConstraint ports.input},
+
+          output_match = "${ports.output.subject}",
+          input_match = "${ports.input.subject}",
           connect = {
-            ["${ports.output.leftAlias}"] = "${ports.input.leftAlias}",
-            ["${ports.output.rightAlias}"] = "${ports.input.rightAlias}"
+            ["${ports.output.leftPort}"] = "${ports.input.leftPort}",
+            ["${ports.output.rightPort}"] = "${ports.input.rightPort}"
           }
         }
       '';

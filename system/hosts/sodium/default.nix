@@ -74,15 +74,15 @@ in {
     # mirror audio from goxlr outputs to wivrn output
     {
       output = {
-        constraint = "GoXLR:monitor_*";
-        leftAlias = "GoXLR:monitor_FL";
-        rightAlias = "GoXLR:monitor_FR";
+        subject = "port.alias";
+        leftPort = "GoXLR:monitor_FL";
+        rightPort = "GoXLR:monitor_FR";
       };
 
       input = {
-        constraint = "WiVRn:playback_*";
-        leftAlias = "WiVRn:playback_1";
-        rightAlias = "WiVRn:playback_2";
+        subject = "port.alias";
+        leftPort = "WiVRn:playback_1";
+        rightPort = "WiVRn:playback_2";
       };
     }
   ];
