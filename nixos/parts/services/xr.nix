@@ -161,6 +161,17 @@
       };
     };
 
+    # increase wivrn microphone volume
+    services.pipewire.wireplumber.scripts = {
+      setNodeVolume = [
+        {
+          subject = "node.name";
+          object = "wivrn.source";
+          volume = 0.1;
+        }
+      ];
+    };
+
     nix-files.parts.system.persistence = {
       directories = [
         "/root/.config/dev.slimevr.SlimeVR"

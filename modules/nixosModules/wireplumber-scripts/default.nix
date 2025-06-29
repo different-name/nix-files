@@ -1,6 +1,6 @@
 {
-  config,
   lib,
+  config,
   ...
 }:
 let
@@ -134,6 +134,20 @@ in
           input_subject = "${rule.input.subject}",
           input_left_port = "${rule.input.leftPort}",
           input_right_port = "${rule.input.rightPort}"
+        }
+      '';
+    }))
+
+    (lib.mkIf (cfg.setNodeVolume != [ ]) (genScriptConfig {
+      name = "set-node-volume";
+      script = ./set-node-volume.lua;
+      scriptCfg = cfg.setNodeVolume;
+
+      genFunctionCall = rule: ''
+        set_node_volume {
+          subject = "${rule.subject}",
+          object = "${rule.object}",
+          volume = ${toString rule.volume}
         }
       '';
     }))
