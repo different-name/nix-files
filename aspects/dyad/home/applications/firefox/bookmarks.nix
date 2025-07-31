@@ -23,6 +23,10 @@
             url = "https://account.proton.me/drive";
           }
           {
+            name = "Copyparty";
+            url = "https://copyparty.different-name.com/";
+          }
+          {
             name = "Photos";
             url = "https://web.ente.io/gallery";
           }
