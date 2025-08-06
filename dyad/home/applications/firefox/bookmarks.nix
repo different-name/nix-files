@@ -39,6 +39,15 @@
             name = "ChatGPT";
             url = "https://chatgpt.com/";
           }
+          "separator"
+          {
+            name = "My Raywhite";
+            url = "https://my.raywhite.com/dashboard/home";
+          }
+          {
+            name = "RW - One System";
+            url = "https://sites.google.com/raywhite.com/raywhite-onesystem/home";
+          }
         ];
       };
     };
