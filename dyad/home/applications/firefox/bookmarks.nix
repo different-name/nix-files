@@ -35,9 +35,8 @@
             url = "https://github.com/different-name/nix-files";
           }
           {
-            # ;-; microsoft slave
-            name = "ChatGPT";
-            url = "https://chatgpt.com/";
+            name = "Kagi Assistant";
+            url = "https://kagi.com/assistant";
           }
           "separator"
           {
